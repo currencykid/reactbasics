@@ -1,0 +1,95 @@
+<head> 
+<script src="https://fb.me/react-15.0.2.js"></script>
+<script src="https://fb.me/react-dom-15.0.2.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class ="container"> 
+  <div class ="row">
+    <div class ="col-md-3 col-xs-12 target">
+    </div> 
+  </div> 
+</div> 
+
+</body> 
+
+<script type="text/jsx"> 
+// define a react component class 
+// must always provide valid object with render method
+var Badge = React.createClass({
+  render: function(){
+  return <button className="btn btn-primary" type="button">
+      {this.props.title} <span className="badge">{this.props.number}</span>
+    </button>
+  }
+}); 
+
+// step 1 add the this.props in the createClass as we did aboe
+//step 2 create options object ,, passed inside render function,, its what props is inside the component
+
+// when you're nesting compoenents we gotta add props so they trickle down
+var Thumbnail = React.createClass({
+    render: function(){
+      return <div className = "col-sm-6 col-md-4"> 
+      <div className="thumbnail">
+      <img src={this.props.imageUrl}  />
+      <div className="caption">
+        <h3>{this.props.header}</h3>
+        <p>{this.props.description}</p>
+        <p>
+        <Badge title={this.props.title} number={this.props.number} />
+        </p>
+      </div>
+      </div> 
+    </div> 
+    }
+});
+
+var ThumbnailList = React.createClass({
+  render: function (){
+   // use map to turnn objects into components 
+   // the first parameter thumbnailprops is the object iself 
+   // do {...thumbnailProps} to pass in entire object and create instance passing in all properties 
+  var list = this.props.thumbnailData.map(function(thumbnailProps){
+    return <Thumbnail {...thumbnailProps} />  
+  }); 
+
+  return <div> 
+    {list}
+  </div> 
+  }
+});
+
+var options = { 
+  thumbnailData: [{
+    title: 'See tutorials',
+    number: '69' ,
+    header : "Learn lalalala",
+    description: "Great resources for learning shi Great resources for learning shitGreat resources for learning shittGreat resources for learning shit" ,
+    imageUrl:'https://tleunen.github.io/react-mdl/react.svg'
+  },
+   {
+    title: "See more tutorial" ,  
+    number: " 34" ,
+    header: "Learn how to see double lalalal" ,
+    description: "Great resources for lerning even more garbage that you'll never need just keep learning and learning adn paying money for trash." ,
+    imageUrl: 'https://www.python.org/static/opengraph-icon-200x200.png'
+   }
+]};
+
+// Ask react to render this class,,, think of it as creating an instance
+// pass in object as second argument..
+var element = React.createElement(ThumbnailList, options); 
+
+// When we ask to render class, we tell it
+// where to put render element in the DOM 
+//first arg is instance of class we want to render
+//second arg is where we want to RENDER IT TO
+ReactDOM.render(element, document.querySelector('.container')); 
+
+</script> 
